@@ -1,11 +1,11 @@
 with yellow_tripdata as (
     select * from {{ source('staging', 'yellow_tripdata') }}
-)
+),
 
-with tripdata as 
+tripdata as 
 (
   select *,
-    row_number() over(partition by vendorid, tpep_pickup_datetime) as rn
+    row_number() over(partition by cast(vendorid as integer), tpep_pickup_datetime) as rn
   from yellow_tripdata
   where vendorid is not null 
 )
